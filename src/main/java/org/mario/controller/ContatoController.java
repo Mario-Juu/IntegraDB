@@ -8,12 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class ContatoController implements ICrud<Contato> {
 
     @Override
     public Contato create(Contato contato) {
+        if(contato == null || contato.isEmpty()){
+            throw new InputMismatchException("Contato não pode ser nulo ou vazio.");
+        }
         try{
             var con = Connect.conectar();
             PreparedStatement pstm = con.prepareStatement("INSERT INTO tb_contatos(nome,email,fone)values(?,?,?)");
@@ -95,6 +99,9 @@ public class ContatoController implements ICrud<Contato> {
 
     @Override
     public Contato update(Contato contato, Integer id) {
+        if(contato == null || contato.isEmpty()){
+            throw new InputMismatchException("Contato não pode ser nulo ou vazio.");
+        }
         try{
             var con = Connect.conectar();
             PreparedStatement pstm = con.prepareStatement("update tb_contatos set nome=?, email=?, fone=? where id=?");

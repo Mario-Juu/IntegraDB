@@ -4,6 +4,7 @@ import org.mario.controller.ContatoController;
 import org.mario.model.Contato;
 
 import javax.swing.*;
+import java.util.InputMismatchException;
 
 public class AddContato {
     private JTextField textField1;
@@ -15,13 +16,20 @@ public class AddContato {
 
     public AddContato() {
         enviarButton.addActionListener(e -> {
+            try{
             Contato contato = new Contato();
             contato.setNome(textField1.getText());
             contato.setEmail(textField2.getText());
             contato.setFone(textField3.getText());
             ContatoController cc = new ContatoController();
             cc.create(contato);
+            textField1.setText("");
+            textField2.setText("");
+            textField3.setText("");
             JOptionPane.showMessageDialog(null, "Contato adicionado com sucesso!");
+            } catch (InputMismatchException ex){
+                JOptionPane.showMessageDialog(null, "Erro ao adicionar contato: " + ex.getMessage());
+            }
         });
         verTodosButton.addActionListener(e -> {
             Menu.preencherTabela(new ContatoController().getAll());
